@@ -1,5 +1,7 @@
 package gr.antivasis.retailmanagementsystem.dtos.products;
 
+import gr.antivasis.retailmanagementsystem.entities.Purchase;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
