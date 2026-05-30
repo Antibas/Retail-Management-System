@@ -1,4 +1,4 @@
-package gr.antivasis.retailmanagementsystem.dto.products;
+package gr.antivasis.retailmanagementsystem.dtos.products;
 
 import java.io.Serializable;
 import java.math.BigDecimal;

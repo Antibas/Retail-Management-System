@@ -1,4 +1,4 @@
-package gr.antivasis.retailmanagementsystem.dto.customers;
+package gr.antivasis.retailmanagementsystem.dtos.customers;
 
 import gr.antivasis.retailmanagementsystem.entities.Customer;
 

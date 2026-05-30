@@ -1,4 +1,4 @@
-package gr.antivasis.retailmanagementsystem.dto.purchases;
+package gr.antivasis.retailmanagementsystem.dtos.purchases;
 
 import java.util.List;
 import java.util.UUID;
