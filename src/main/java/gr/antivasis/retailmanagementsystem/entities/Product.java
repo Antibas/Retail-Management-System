@@ -1,10 +1,12 @@
 package gr.antivasis.retailmanagementsystem.entities;
 
+import gr.antivasis.retailmanagementsystem.dtos.products.CreateUpdateProductDTO;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
 
@@ -15,6 +17,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @Entity
+@NoArgsConstructor
 @Table(name = "products")
 public class Product {
     @Id
@@ -41,5 +44,15 @@ public class Product {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
+    public Product(CreateUpdateProductDTO product) {
+        this.fromDTO(product);
+    }
 
+    public Product fromDTO(CreateUpdateProductDTO product){
+        this.name = product.name();
+        this.description = product.description();
+        this.price = product.price();
+        this.sku = product.sku();
+        return this;
+    }
 }

@@ -1,19 +1,18 @@
 package gr.antivasis.retailmanagementsystem.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import gr.antivasis.retailmanagementsystem.dtos.customers.CreateUpdateCustomerDTO;
+import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.ColumnDefault;
 
-import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Getter
 @Setter
 @Entity
+@NoArgsConstructor
 @Table(name = "customers")
 public class Customer {
     @Id
@@ -36,10 +35,31 @@ public class Customer {
     private Boolean isActive;
 
     @Column(name = "created_at")
-    private Instant createdAt;
+    private LocalDateTime createdAt;
 
     @Column(name = "updated_at")
-    private Instant updatedAt;
+    private LocalDateTime updatedAt;
 
+    @PrePersist
+    protected void onCreate() {
+        createdAt = LocalDateTime.now();
+        updatedAt = LocalDateTime.now();
+    }
 
+    @PreUpdate
+    protected void onUpdate() {
+        updatedAt = LocalDateTime.now();
+    }
+
+    public Customer(CreateUpdateCustomerDTO customer) {
+        this.fromDTO(customer);
+    }
+
+    public Customer fromDTO(CreateUpdateCustomerDTO customer){
+        this.firstName = customer.firstName();
+        this.lastName = customer.lastName();
+        this.email = customer.email();
+        this.phone = customer.phone();
+        return this;
+    }
 }

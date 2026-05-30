@@ -2,16 +2,17 @@ package gr.antivasis.retailmanagementsystem.entities;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.ColumnDefault;
+import org.jspecify.annotations.NonNull;
 
-import java.time.Instant;
 import java.time.LocalDateTime;
-import java.util.UUID;
+import java.util.*;
 
 @Getter
 @Setter
 @Entity
+@NoArgsConstructor
 @Table(name = "purchases")
 public class Purchase {
     @Id
@@ -31,6 +32,10 @@ public class Purchase {
 
     @Column(name = "purchased_at")
     private LocalDateTime purchasedAt;
+
+    @NonNull
+    @OneToMany(mappedBy = "purchase")
+    private List<PurchaseItem> purchaseItems = new ArrayList<>();
 
 
 }
