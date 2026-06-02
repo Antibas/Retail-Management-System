@@ -1,13 +1,15 @@
 package gr.antivasis.retailmanagementsystem.entities;
 
 import gr.antivasis.retailmanagementsystem.dtos.customers.CreateUpdateCustomerDTO;
+import gr.antivasis.retailmanagementsystem.enums.PointsBatchStatus;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.jspecify.annotations.NonNull;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
+import java.util.*;
 
 @Getter
 @Setter
@@ -41,6 +43,13 @@ public class Customer {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
+    @NonNull
+    @OneToMany(mappedBy = "customer")
+    private List<PointsBatch> pointsBatches = new ArrayList<>();
+
+    @Column(name = "lifetime_points")
+    private Integer lifetimePoints;
+
     @PrePersist
     protected void onCreate() {
         createdAt = LocalDateTime.now();
@@ -50,6 +59,13 @@ public class Customer {
     @PreUpdate
     protected void onUpdate() {
         updatedAt = LocalDateTime.now();
+    }
+
+    public double getPoints() {
+        return this.getPointsBatches()
+                .stream()
+                .filter(p -> p.getStatus() == PointsBatchStatus.REDEEMABLE)
+                .mapToDouble(PointsBatch::getPoints).sum();
     }
 
     public Customer(CreateUpdateCustomerDTO customer) {
