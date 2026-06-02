@@ -1,10 +1,7 @@
 package gr.antivasis.retailmanagementsystem.entities;
 
 import gr.antivasis.retailmanagementsystem.dtos.products.CreateUpdateProductDTO;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -21,6 +18,7 @@ import java.util.UUID;
 @Table(name = "products")
 public class Product {
     @Id
+    @GeneratedValue
     @Column(name = "id", nullable = false)
     private UUID id;
 
@@ -36,6 +34,9 @@ public class Product {
     @Column(name = "sku", nullable = false, length = 50)
     private String sku;
 
+    @Column(name = "stock_quantity", nullable = false)
+    private Integer stockQuantity;
+
     @ColumnDefault("CURRENT_TIMESTAMP")
     @Column(name = "created_at")
     private LocalDateTime createdAt;
@@ -43,6 +44,21 @@ public class Product {
     @ColumnDefault("CURRENT_TIMESTAMP")
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
+
+    @ColumnDefault("true")
+    @Column(name = "is_active")
+    private Boolean isActive;
+
+    @PrePersist
+    protected void onCreate() {
+        createdAt = LocalDateTime.now();
+        updatedAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        updatedAt = LocalDateTime.now();
+    }
 
     public Product(CreateUpdateProductDTO product) {
         this.fromDTO(product);
@@ -53,6 +69,7 @@ public class Product {
         this.description = product.description();
         this.price = product.price();
         this.sku = product.sku();
+        this.stockQuantity = product.stockQuantity();
         return this;
     }
 }

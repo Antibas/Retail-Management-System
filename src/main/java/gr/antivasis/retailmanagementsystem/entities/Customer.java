@@ -16,6 +16,7 @@ import java.util.UUID;
 @Table(name = "customers")
 public class Customer {
     @Id
+    @GeneratedValue
     @Column(name = "id", nullable = false)
     private UUID id;
 

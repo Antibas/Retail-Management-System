@@ -14,7 +14,13 @@ public record GetPurchaseDTO(UUID id, UUID customerId, Integer totalAmount, Loca
                              LocalDateTime purchasedAt, List<GetPurchaseItemDTO> items) implements Serializable {
 
   public GetPurchaseDTO(Purchase purchase){
-    this(purchase.getId(), purchase.getCustomer().getId(), purchase.getTotalAmount(), purchase.getCreatedAt(), purchase.getPurchasedAt(),
-            purchase.getPurchaseItems().stream().map(GetPurchaseItemDTO::new).toList());
+    this(
+            purchase.getId(),
+            purchase.getCustomer().getId(),
+            purchase.getPurchaseItems().stream().mapToInt(item -> item.getQuantity() * item.getUnitPrice().intValue()).sum(),
+            purchase.getCreatedAt(),
+            purchase.getPurchasedAt(),
+            purchase.getPurchaseItems().stream().map(GetPurchaseItemDTO::new).toList()
+    );
   }
 }

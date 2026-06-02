@@ -24,14 +24,16 @@ public class Purchase {
     @JoinColumn(name = "customer_id")
     private Customer customer;
 
-    @Column(name = "total_amount", nullable = false)
-    private Integer totalAmount;
-
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
     @Column(name = "purchased_at")
     private LocalDateTime purchasedAt;
+
+    @PrePersist
+    protected void onCreate() {
+        createdAt = LocalDateTime.now();
+    }
 
     @NonNull
     @OneToMany(mappedBy = "purchase")

@@ -7,5 +7,5 @@ import java.math.BigDecimal;
  * DTO for {@link gr.antivasis.retailmanagementsystem.entities.Product}
  */
 public record CreateUpdateProductDTO(String name, String description, BigDecimal price,
-                                     String sku) implements Serializable {
+                                     String sku, Integer stockQuantity) implements Serializable {
 }

@@ -4,13 +4,14 @@ import gr.antivasis.retailmanagementsystem.dtos.products.CreateUpdateProductDTO;
 import gr.antivasis.retailmanagementsystem.dtos.products.GetProductDTO;
 import gr.antivasis.retailmanagementsystem.services.ProductService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/product")
+@RequestMapping("/products")
 @RequiredArgsConstructor
 public class ProductController {
 
@@ -22,7 +23,7 @@ public class ProductController {
     }
 
     @PutMapping("/{id}")
-    public GetProductDTO updateProduct(@PathVariable UUID id, CreateUpdateProductDTO productDTO){
+    public GetProductDTO updateProduct(@PathVariable UUID id, @RequestBody CreateUpdateProductDTO productDTO){
         return productService.update(id, productDTO);
     }
 
@@ -34,5 +35,10 @@ public class ProductController {
     @GetMapping
     public List<GetProductDTO> listProducts(@RequestParam(required = false) String query){
         return productService.list(query);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteProduct(@PathVariable UUID id){
+        return productService.delete(id);
     }
 }

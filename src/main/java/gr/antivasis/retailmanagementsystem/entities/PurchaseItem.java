@@ -1,7 +1,7 @@
 package gr.antivasis.retailmanagementsystem.entities;
 
-import gr.antivasis.retailmanagementsystem.dtos.products.CreateUpdateProductDTO;
 import gr.antivasis.retailmanagementsystem.dtos.purchases.CreatePurchaseItemDTO;
+import gr.antivasis.retailmanagementsystem.exceptions.ResourceNotFoundException;
 import gr.antivasis.retailmanagementsystem.repositories.ProductRepository;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -17,7 +17,7 @@ import java.math.BigDecimal;
 @Table(name = "purchase_item")
 public class PurchaseItem {
     @EmbeddedId
-    private PurchaseItemId id;
+    private PurchaseItemId id = new PurchaseItemId();
 
     @MapsId("productId")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -41,7 +41,12 @@ public class PurchaseItem {
 
     public PurchaseItem fromDTO(CreatePurchaseItemDTO item, ProductRepository productRepository){
         this.quantity = item.quantity();
-        this.product = productRepository.findById(item.productId()).orElseThrow();
+        this.product = productRepository
+                .findByIdAndIsActiveTrue(item.productId())
+                .orElseThrow(
+                        () -> new ResourceNotFoundException("Product", item.productId())
+                );
+        this.unitPrice = this.product.getPrice();
         return this;
     }
 
