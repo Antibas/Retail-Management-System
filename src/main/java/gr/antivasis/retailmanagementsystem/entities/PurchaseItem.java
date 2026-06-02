@@ -1,8 +1,6 @@
 package gr.antivasis.retailmanagementsystem.entities;
 
 import gr.antivasis.retailmanagementsystem.dtos.purchases.CreatePurchaseItemDTO;
-import gr.antivasis.retailmanagementsystem.exceptions.ResourceNotFoundException;
-import gr.antivasis.retailmanagementsystem.repositories.ProductRepository;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -35,19 +33,14 @@ public class PurchaseItem {
     @Column(name = "unit_price", nullable = false, precision = 10, scale = 2)
     private BigDecimal unitPrice;
 
-    public PurchaseItem(CreatePurchaseItemDTO item, ProductRepository productRepository) {
-        this.fromDTO(item, productRepository);
+    public PurchaseItem(CreatePurchaseItemDTO item, Product product) {
+        this.fromDTO(item, product);
     }
 
-    public PurchaseItem fromDTO(CreatePurchaseItemDTO item, ProductRepository productRepository){
+    public void fromDTO(CreatePurchaseItemDTO item, Product product){
         this.quantity = item.quantity();
-        this.product = productRepository
-                .findByIdAndIsActiveTrue(item.productId())
-                .orElseThrow(
-                        () -> new ResourceNotFoundException("Product", item.productId())
-                );
+        this.product = product;
         this.unitPrice = this.product.getPrice();
-        return this;
     }
 
 }
