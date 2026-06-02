@@ -17,7 +17,7 @@ public record GetPurchaseDTO(UUID id, UUID customerId, Integer totalAmount, Loca
     this(
             purchase.getId(),
             purchase.getCustomer().getId(),
-            purchase.getPurchaseItems().stream().mapToInt(item -> item.getQuantity() * item.getUnitPrice().intValue()).sum(),
+            purchase.getTotalAmount(),
             purchase.getCreatedAt(),
             purchase.getPurchasedAt(),
             purchase.getPurchaseItems().stream().map(GetPurchaseItemDTO::new).toList()
