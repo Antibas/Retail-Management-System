@@ -4,7 +4,6 @@ import gr.antivasis.retailmanagementsystem.entities.Customer;
 import gr.antivasis.retailmanagementsystem.enums.CustomerTier;
 
 import java.io.Serializable;
-import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.UUID;
 

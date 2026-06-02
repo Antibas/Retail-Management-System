@@ -8,7 +8,6 @@ import gr.antivasis.retailmanagementsystem.entities.Purchase;
 import gr.antivasis.retailmanagementsystem.entities.PurchaseItem;
 import gr.antivasis.retailmanagementsystem.enums.CustomerTier;
 import gr.antivasis.retailmanagementsystem.enums.PointsBatchStatus;
-import gr.antivasis.retailmanagementsystem.exceptions.ActionNotAllowedException;
 import gr.antivasis.retailmanagementsystem.exceptions.ResourceNotFoundException;
 import gr.antivasis.retailmanagementsystem.repositories.*;
 import jakarta.transaction.Transactional;

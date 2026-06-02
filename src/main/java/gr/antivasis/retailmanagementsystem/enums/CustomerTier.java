@@ -24,5 +24,5 @@ public enum CustomerTier {
 //            case 200 -> PLATINUM;
 //            default -> throw new IllegalArgumentException("Invalid points: " + points);
 //        };
-    };
+    }
 }

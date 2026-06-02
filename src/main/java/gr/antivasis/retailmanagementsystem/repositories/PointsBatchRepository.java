@@ -8,6 +8,5 @@ import java.util.List;
 import java.util.UUID;
 
 public interface PointsBatchRepository extends JpaRepository<PointsBatch, UUID> {
-    List<PointsBatch> findByCustomerIdAndStatus(UUID customerId, PointsBatchStatus status);
     List<PointsBatch> findByStatusIsNot(PointsBatchStatus status);
 }
