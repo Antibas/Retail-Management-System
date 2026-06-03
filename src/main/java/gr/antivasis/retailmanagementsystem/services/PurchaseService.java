@@ -8,6 +8,7 @@ import gr.antivasis.retailmanagementsystem.entities.Purchase;
 import gr.antivasis.retailmanagementsystem.entities.PurchaseItem;
 import gr.antivasis.retailmanagementsystem.enums.CustomerTier;
 import gr.antivasis.retailmanagementsystem.enums.PointsBatchStatus;
+import gr.antivasis.retailmanagementsystem.exceptions.ActionNotAllowedException;
 import gr.antivasis.retailmanagementsystem.exceptions.ResourceNotFoundException;
 import gr.antivasis.retailmanagementsystem.repositories.*;
 import jakarta.transaction.Transactional;
@@ -34,8 +35,50 @@ public class PurchaseService {
         return new GetPurchaseDTO(purchaseRepository.findById(id).orElseThrow());
     }
 
+    private int redeemPoints(Customer customer, int redeemedPoints) {
+//        List<PointsBatch> pointsBatches = pointsBatchRepository.findByCustomerIdAndStatus(customerId, PointsBatchStatus.REDEEMABLE);
+        List<PointsBatch> pointsBatches = customer.getPointsBatches().stream().filter(p -> p.getStatus() == PointsBatchStatus.REDEEMABLE).toList();
+        if (pointsBatches.isEmpty()) {
+            throw new ActionNotAllowedException("No redeemable points batches found for the customer.");
+        }
+
+        if (customer.getPoints() < 20) {
+            throw new ActionNotAllowedException("Customer does not have enough points to redeem.");
+        }
+
+        if (customer.getPoints() < redeemedPoints) {
+            throw new ActionNotAllowedException("Insufficient points in the redeemable points batch.");
+        }
+
+        if(redeemedPoints % 100 != 0) {
+            throw new ActionNotAllowedException("Redeemed points must be a multiple of 100.");
+        }
+
+        int points = redeemedPoints;
+
+        for (PointsBatch pointsBatch : pointsBatches) {
+            if (pointsBatch.getPoints() <= points) {
+                points -= pointsBatch.getPoints();
+                pointsBatch.setPoints(0);
+                pointsBatch.setStatus(PointsBatchStatus.REDEEMED);
+            } else {
+                pointsBatch.setPoints(pointsBatch.getPoints() - points);
+                points = 0;
+            }
+
+            pointsBatchRepository.save(pointsBatch);
+
+            if (points == 0){
+                break;
+            }
+        }
+
+        assert points == 0;
+        return (redeemedPoints % 100) * 10;
+    }
+
     @Transactional
-    public GetPurchaseDTO create(UUID customerId, List<CreatePurchaseItemDTO> items) {
+    public GetPurchaseDTO create(UUID customerId, List<CreatePurchaseItemDTO> items, int redeemedPoints) {
         Customer customer = customerRepository
                 .findByIdAndIsActiveTrue(customerId)
                 .orElseThrow(
@@ -57,8 +100,15 @@ public class PurchaseService {
         }
         purchase.setPurchaseItems(purchaseItems);
 
+        int discount = 0;
+        if (redeemedPoints > 0) {
+            discount = redeemPoints(customer, redeemedPoints);
+        }
+
+        int totalAmount = purchase.getTotalAmount() - discount;
+
         CustomerTier customerTier = CustomerTier.fromPoints(customer.getLifetimePoints());
-        double points = customerTier.pointsMultiplier * (purchase.getTotalAmount() % 10);
+        double points = customerTier.pointsMultiplier * (totalAmount % 10);
         PointsBatch pointsBatch = new PointsBatch(customer, points);
 
         pointsBatchRepository.save(pointsBatch);
