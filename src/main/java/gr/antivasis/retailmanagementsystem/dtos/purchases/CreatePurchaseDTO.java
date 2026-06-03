@@ -1,7 +1,12 @@
 package gr.antivasis.retailmanagementsystem.dtos.purchases;
 
 import java.util.List;
-import java.util.UUID;
 
-public record CreatePurchaseDTO(UUID customerId, List<CreatePurchaseItemDTO> items) {
+public record CreatePurchaseDTO(Integer redeemedPoints, List<CreatePurchaseItemDTO> items) {
+
+    public CreatePurchaseDTO {
+        if (redeemedPoints == null || redeemedPoints < 0) {
+            redeemedPoints = 0;
+        }
+    }
 }

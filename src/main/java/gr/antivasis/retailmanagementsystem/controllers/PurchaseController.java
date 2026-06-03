@@ -1,6 +1,6 @@
 package gr.antivasis.retailmanagementsystem.controllers;
 
-import gr.antivasis.retailmanagementsystem.dtos.purchases.CreatePurchaseItemDTO;
+import gr.antivasis.retailmanagementsystem.dtos.purchases.CreatePurchaseDTO;
 import gr.antivasis.retailmanagementsystem.dtos.purchases.GetPurchaseDTO;
 import gr.antivasis.retailmanagementsystem.services.PurchaseService;
 import lombok.RequiredArgsConstructor;
@@ -17,8 +17,8 @@ public class PurchaseController {
     private final PurchaseService purchaseService;
 
     @PostMapping("/customer/{customerId}")
-    public GetPurchaseDTO createPurchase(@PathVariable UUID customerId, @RequestBody List<CreatePurchaseItemDTO> items) {
-        return purchaseService.create(customerId, items);
+    public GetPurchaseDTO createPurchase(@PathVariable UUID customerId, @RequestBody CreatePurchaseDTO purchaseDTO) {
+        return purchaseService.create(customerId, purchaseDTO.items(), purchaseDTO.redeemedPoints());
     }
 
     @GetMapping("/{id}")
