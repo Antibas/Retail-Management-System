@@ -4,6 +4,7 @@ import gr.antivasis.retailmanagementsystem.dtos.purchases.CreatePurchaseItemDTO;
 import gr.antivasis.retailmanagementsystem.dtos.purchases.GetPurchaseDTO;
 import gr.antivasis.retailmanagementsystem.entities.Customer;
 import gr.antivasis.retailmanagementsystem.entities.PointsBatch;
+import gr.antivasis.retailmanagementsystem.entities.Product;
 import gr.antivasis.retailmanagementsystem.entities.Purchase;
 import gr.antivasis.retailmanagementsystem.entities.PurchaseItem;
 import gr.antivasis.retailmanagementsystem.enums.CustomerTier;
@@ -92,8 +93,21 @@ public class PurchaseService {
 
         PurchaseItem item;
         List<PurchaseItem> purchaseItems = new ArrayList<>();
+        Product product;
         for(CreatePurchaseItemDTO itemDTO : items) {
-            item = new PurchaseItem(itemDTO, productRepository);
+            product = productRepository
+                    .findByIdAndIsActiveTrue(itemDTO.productId())
+                    .orElseThrow(
+                            () -> new ResourceNotFoundException("Product", itemDTO.productId())
+                    );
+            if (product.getStockQuantity() == 0) {
+                throw new ActionNotAllowedException("Product " + product.getId() + " is out of stock");
+            }
+            if (product.getStockQuantity() < itemDTO.quantity()) {
+                throw new ActionNotAllowedException("Product " + product.getId() + " does not have enough stock");
+            }
+            product.setStockQuantity(product.getStockQuantity() - itemDTO.quantity());
+            item = new PurchaseItem(itemDTO, product);
             item.setPurchase(purchase);
 
             purchaseItems.add(purchaseItemRepository.save(item));
