@@ -74,7 +74,7 @@ public class PurchaseService {
         }
 
         assert points == 0;
-        return (redeemedPoints % 100) * 10;
+        return redeemedPoints / 10;
     }
 
     @Transactional
@@ -105,18 +105,20 @@ public class PurchaseService {
             discount = redeemPoints(customer, redeemedPoints);
         }
 
-        int totalAmount = purchase.getTotalAmount() - discount;
+        double totalAmount = purchase.getTotalAmount() - discount;
 
-        CustomerTier customerTier = CustomerTier.fromPoints(customer.getLifetimePoints());
-        double points = customerTier.pointsMultiplier * (totalAmount % 10);
-        PointsBatch pointsBatch = new PointsBatch(customer, points);
+        if (redeemedPoints == 0) {
+            CustomerTier customerTier = CustomerTier.fromPoints(customer.getLifetimePoints());
+            double points = customerTier.pointsMultiplier * Math.floor(totalAmount / 10);
+            PointsBatch pointsBatch = new PointsBatch(customer, points);
 
-        pointsBatchRepository.save(pointsBatch);
+            pointsBatchRepository.save(pointsBatch);
 
-        customer.setLifetimePoints(customer.getLifetimePoints() + (int) points);
-        customerRepository.save(customer);
+            customer.setLifetimePoints(customer.getLifetimePoints() + (int) points);
+            customerRepository.save(customer);
+        }
 
-        return new GetPurchaseDTO(purchase);
+        return new GetPurchaseDTO(purchase, totalAmount);
     }
 
     public List<GetPurchaseDTO> list() {

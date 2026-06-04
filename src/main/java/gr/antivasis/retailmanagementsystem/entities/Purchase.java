@@ -39,8 +39,8 @@ public class Purchase {
     @OneToMany(mappedBy = "purchase")
     private List<PurchaseItem> purchaseItems = new ArrayList<>();
 
-    public int getTotalAmount() {
-        return this.getPurchaseItems().stream().mapToInt(item -> item.getQuantity() * item.getUnitPrice().intValue()).sum();
+    public double getTotalAmount() {
+        return this.getPurchaseItems().stream().mapToDouble(item -> item.getQuantity() * item.getUnitPrice().doubleValue()).sum();
     }
 
 

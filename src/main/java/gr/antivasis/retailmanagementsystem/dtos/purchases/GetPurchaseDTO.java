@@ -10,14 +10,18 @@ import java.util.UUID;
 /**
  * DTO for {@link gr.antivasis.retailmanagementsystem.entities.Purchase}
  */
-public record GetPurchaseDTO(UUID id, UUID customerId, Integer totalAmount, LocalDateTime createdAt,
+public record GetPurchaseDTO(UUID id, UUID customerId, Double totalAmount, LocalDateTime createdAt,
                              LocalDateTime purchasedAt, List<GetPurchaseItemDTO> items) implements Serializable {
 
-  public GetPurchaseDTO(Purchase purchase){
+    public GetPurchaseDTO(Purchase purchase){
+        this(purchase, 0);
+    }
+
+  public GetPurchaseDTO(Purchase purchase, double totalAmount){
     this(
             purchase.getId(),
             purchase.getCustomer().getId(),
-            purchase.getTotalAmount(),
+            totalAmount == 0? purchase.getTotalAmount(): totalAmount,
             purchase.getCreatedAt(),
             purchase.getPurchasedAt(),
             purchase.getPurchaseItems().stream().map(GetPurchaseItemDTO::new).toList()
