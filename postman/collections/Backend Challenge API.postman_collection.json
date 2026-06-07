@@ -1,0 +1,475 @@
+{
+  "info": {
+    "_postman_id": "38a254b1-7a9e-4050-82e9-758e8e252f1e",
+    "name": "Backend Challenge API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "45859768",
+    "_collection_link": "https://panagiotis-6414707.postman.co/workspace/35f0e330-8c0c-468d-8b2a-5589287ba16a/collection/45859768-38a254b1-7a9e-4050-82e9-758e8e252f1e?action=share&source=collection_link&creator=45859768"
+  },
+  "item": [
+    {
+      "name": "Products",
+      "item": [
+        {
+          "name": "Get All Products",
+          "id": "06523af9-2623-4dbd-a4a2-bd3beee87105",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/products",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "products"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Product by ID",
+          "id": "faf3f86e-773b-4653-9fef-0ba812f6c444",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/products/{{productId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "products",
+                "{{productId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Product",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "435b4284-526f-43a4-942b-5af34f4eacba",
+                "exec": [
+                  "try {",
+                  "    var responseData = pm.response.json();",
+                  "    var content = responseData;",
+                  "    ",
+                  "    if (content && content.id) {",
+                  "        pm.collectionVariables.set(\"productId\", content.id);",
+                  "        console.log(\"Product ID stored successfully: \" + content.id);",
+                  "    } else {",
+                  "        console.error(\"Response does not contain an 'id' field\");",
+                  "    }",
+                  "} catch (error) {",
+                  "    console.error(\"Error parsing response or extracting id: \" + error.message);",
+                  "}"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "id": "5a422099-691e-4423-bc67-ebfac0e49368",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"MacBook Pro 14\",\n    \"description\": \"Apple MacBook Pro 14-inch\",\n    \"price\": 209999,\n    \"sku\": \"LAPTOP-001\",\n    \"stockQuantity\": 50\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/products",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "products"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Product",
+          "id": "180a282a-1ead-4e5a-bdb5-b79f44428fe0",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"MacBook Pro 16 (Updated)\",\n    \"description\": \"Apple MacBook Pro 16-inch - ON SALE\",\n    \"price\": 229999,\n    \"sku\": \"LAPTOP-001\",\n    \"stockQuantity\": 45\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/products/{{productId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "products",
+                "{{productId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Product",
+          "id": "831c07cf-50d8-4eb6-b894-2c240d3b16cf",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/products/{{productId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "products",
+                "{{productId}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ],
+      "id": "f243a32f-e722-4513-afb3-d7d4f2d4e966"
+    },
+    {
+      "name": "Customers",
+      "item": [
+        {
+          "name": "Get All Customers",
+          "id": "a4f1c2d2-7cce-4d6c-ab11-b5792b3e56c1",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/customers",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "customers"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Customer by ID",
+          "id": "4832e99e-581d-43ba-bb74-9c667caa34c2",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/customers/{{customerId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "customers",
+                "{{customerId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Customer",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "f806d71c-782f-4886-86f6-efd105d928bd",
+                "exec": [
+                  "try {",
+                  "    var responseData = pm.response.json();",
+                  "    var content = responseData;",
+                  "    ",
+                  "    if (content && content.id) {",
+                  "        pm.collectionVariables.set(\"customerId\", content.id);",
+                  "    } else {",
+                  "        console.error(\"Response does not contain an 'id' field\");",
+                  "    }",
+                  "} catch (error) {",
+                  "    console.error(\"Error parsing response or extracting id: \" + error.message);",
+                  "}"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "id": "0a864f0f-228e-4af1-8f7a-dc0ce026b5a2",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"firstName\": \"John\",\n    \"lastName\": \"Doe\",\n    \"email\": \"john.doe@example0.com\",\n    \"phone\": \"+30-2310-123456\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/customers",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "customers"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Customer",
+          "id": "e8e4e14a-e57a-41ac-9b24-2e35ba2c4b08",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"firstName\": \"Joe\",\n    \"lastName\": \"Doe\",\n    \"email\": \"john.updated@examplev.com\",\n    \"phone\": \"+1-555-123-4567\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/customers/{{customerId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "customers",
+                "{{customerId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Customer",
+          "id": "f1fd2b2d-9f45-48a0-bb3d-2609b9a13eb0",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/customers/{{customerId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "customers",
+                "{{customerId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Customer Purchases",
+          "id": "b11dc6fd-cdb4-497d-8e5a-6c2812ee8495",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/customers/{{customerId}}/purchases",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "customers",
+                "{{customerId}}",
+                "purchases"
+              ]
+            }
+          },
+          "response": []
+        }
+      ],
+      "id": "8a499e96-fac7-466a-b523-9b6985ffb93c"
+    },
+    {
+      "name": "Purchases",
+      "item": [
+        {
+          "name": "Get All Purchases",
+          "id": "a1eabf24-3127-4590-9911-0398ea961b6d",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/purchases",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "purchases"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Purchase by ID",
+          "id": "195cd57e-a998-480c-b338-8a64ad14285d",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/purchases/{{purchaseId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "purchases",
+                "{{purchaseId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Purchase",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "fc6d26d7-cf41-49b3-9be2-a74b775a01e8",
+                "exec": [
+                  "try {",
+                  "    var responseData = pm.response.json();",
+                  "    var content = responseData;",
+                  "    ",
+                  "    if (content && content.id) {",
+                  "        pm.collectionVariables.set(\"purchaseId\", content.id);",
+                  "    } else {",
+                  "        console.error(\"Response does not contain an 'id' field\");",
+                  "    }",
+                  "} catch (error) {",
+                  "    console.error(\"Error parsing response or extracting id: \" + error.message);",
+                  "}"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "id": "39667881-3ac4-4a9c-af65-93fb63f42824",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    // \"redeemedPoints\": 2000,\n    \"items\": [\n        {\n            \"productId\": \"{{productId}}\",\n            \"quantity\": 100\n        }\n    ]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/purchases/customer/{{customerId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "purchases",
+                "customer",
+                "{{customerId}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ],
+      "id": "75fe8591-2f1f-46ea-bfad-d1e0745b9204"
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "id": "4d699626-79f8-46e7-980e-74c6beaa52b3",
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "id": "eb32541a-3133-4cea-ac19-97cd061724ad",
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "id": "a076f9f8-542a-4301-9cf3-fd801f55a7f9",
+      "key": "baseUrl",
+      "value": "http://localhost:5155"
+    },
+    {
+      "id": "7c87243c-3673-4c99-ab6b-f0e1fe7ed204",
+      "key": "productId",
+      "value": ""
+    },
+    {
+      "id": "83d58d8a-ae7d-444f-96c4-9fdcd17f3065",
+      "key": "purchaseId",
+      "value": ""
+    },
+    {
+      "id": "4aaa6a53-353e-4d14-82a9-6eafbf5117da",
+      "key": "customerId",
+      "value": ""
+    }
+  ]
+}
